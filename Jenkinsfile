@@ -150,7 +150,7 @@ pipeline {
             steps {
                 dir('infra') {
                     sh '''
-                    terraform init -input=false
+                    terraform init -upgrade -input=false
 
                     terraform apply -auto-approve \
                       -var="image_tag=${IMAGE_TAG}" \
