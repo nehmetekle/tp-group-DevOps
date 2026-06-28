@@ -107,11 +107,14 @@ pipeline {
                 anyOf {
                     branch 'Main'
                     branch 'main'
+                    branch 'person-c-setup'
                     expression {
                         return env.GIT_BRANCH == 'origin/Main' ||
                             env.GIT_BRANCH == 'Main' ||
                             env.GIT_BRANCH == 'origin/main' ||
-                            env.GIT_BRANCH == 'main'
+                            env.GIT_BRANCH == 'main' ||
+                            env.GIT_BRANCH == 'origin/person-c-setup' ||
+                            env.GIT_BRANCH == 'person-c-setup'
                     }
                 }
             }
@@ -139,11 +142,14 @@ pipeline {
                 anyOf {
                     branch 'Main'
                     branch 'main'
+                    branch 'person-c-setup'
                     expression {
                         return env.GIT_BRANCH == 'origin/Main' ||
                             env.GIT_BRANCH == 'Main' ||
                             env.GIT_BRANCH == 'origin/main' ||
-                            env.GIT_BRANCH == 'main'
+                            env.GIT_BRANCH == 'main' ||
+                            env.GIT_BRANCH == 'origin/person-c-setup' ||
+                            env.GIT_BRANCH == 'person-c-setup'
                     }
                 }
             }
@@ -168,11 +174,14 @@ pipeline {
                 anyOf {
                     branch 'Main'
                     branch 'main'
+                    branch 'person-c-setup'
                     expression {
                         return env.GIT_BRANCH == 'origin/Main' ||
                                env.GIT_BRANCH == 'Main' ||
                                env.GIT_BRANCH == 'origin/main' ||
-                               env.GIT_BRANCH == 'main'
+                               env.GIT_BRANCH == 'main' ||
+                               env.GIT_BRANCH == 'origin/person-c-setup' ||
+                               env.GIT_BRANCH == 'person-c-setup'
                     }
                 }
             }
