@@ -47,30 +47,33 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                SONARQUBE_TOKEN = credentials('final-project-sonar-token')
-            }
             steps {
                 withSonarQubeEnv('sonarqube') {
-                    sh '''
-                    docker run --rm \
-                      --network cicd-network \
-                      --volumes-from jenkins \
-                      -w "$WORKSPACE" \
-                      -e SONAR_HOST_URL="$SONAR_HOST_URL" \
-                      -e SONAR_TOKEN="$SONARQUBE_TOKEN" \
-                      sonarsource/sonar-scanner-cli:latest \
-                      sonar-scanner \
-                      -Dsonar.projectKey=devops-task-api \
-                      -Dsonar.projectName=DevOpsTaskAPI \
-                      -Dsonar.projectBaseDir="$WORKSPACE" \
-                      -Dsonar.sources=app \
-                      -Dsonar.tests=tests \
-                      -Dsonar.python.version=3.12 \
-                      -Dsonar.python.coverage.reportPaths=coverage.xml \
-                      -Dsonar.sourceEncoding=UTF-8 \
-                      -Dsonar.scanner.metadataFilePath=$WORKSPACE/report-task.txt
-                    '''
+                    withCredentials([string(
+                        credentialsId: 'final-project-sonar-token',
+                        variable: 'SONAR_AUTH_TOKEN'
+                    )]) {
+                        sh '''
+                        docker run --rm \
+                        --network cicd-network \
+                        --volumes-from jenkins \
+                        -w "$WORKSPACE" \
+                        -e SONAR_HOST_URL="$SONAR_HOST_URL" \
+                        -e SONAR_AUTH_TOKEN="$SONAR_AUTH_TOKEN" \
+                        sonarsource/sonar-scanner-cli:latest \
+                        sonar-scanner \
+                        -Dsonar.projectKey=devops-task-api \
+                        -Dsonar.projectName=DevOpsTaskAPI \
+                        -Dsonar.projectBaseDir="$WORKSPACE" \
+                        -Dsonar.sources=app \
+                        -Dsonar.tests=tests \
+                        -Dsonar.python.version=3.11 \
+                        -Dsonar.python.coverage.reportPaths=coverage.xml \
+                        -Dsonar.sourceEncoding=UTF-8 \
+                        -Dsonar.login="$SONAR_AUTH_TOKEN" \
+                        -Dsonar.scanner.metadataFilePath=$WORKSPACE/report-task.txt
+                        '''
+                    }
                 }
             }
         }
