@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'devops-task-api'
-        REGISTRY = 'ghcr.io/nehmetekle'
+        REGISTRY = 'ghcr.io/jefsaber'
         STAGING_CONTAINER = 'devops-task-api-staging'
         IMAGE_TAG = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     }
@@ -104,32 +104,32 @@ pipeline {
 
         stage('Push Docker Image') {
             when {
-                    anyOf {
-                        branch 'Main'
-                        branch 'main'
-                        expression {
-                            return env.GIT_BRANCH == 'origin/Main' ||
-                                env.GIT_BRANCH == 'Main' ||
-                                env.GIT_BRANCH == 'origin/main' ||
-                                env.GIT_BRANCH == 'main'
-                        }
+                anyOf {
+                    branch 'Main'
+                    branch 'main'
+                    expression {
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                            env.GIT_BRANCH == 'Main' ||
+                            env.GIT_BRANCH == 'origin/main' ||
+                            env.GIT_BRANCH == 'main'
                     }
                 }
+            }
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'final_project_github_token',
                     usernameVariable: 'REGISTRY_USER',
                     passwordVariable: 'REGISTRY_PASS'
                 )]) {
-                    sh """
-                    echo $REGISTRY_PASS | docker login ghcr.io -u $REGISTRY_USER --password-stdin
+                    sh '''
+                    echo "$REGISTRY_PASS" | docker login ghcr.io -u "$REGISTRY_USER" --password-stdin
 
                     docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
                     docker push ${REGISTRY}/${IMAGE_NAME}:${IMAGE_TAG}
 
                     docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${REGISTRY}/${IMAGE_NAME}:latest
                     docker push ${REGISTRY}/${IMAGE_NAME}:latest
-                    """
+                    '''
                 }
             }
         }
