@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'devops-task-api'
-        REGISTRY = 'ghcr.io/jefsaber'
+        REGISTRY = 'ghcr.io/davidosf'
         STAGING_CONTAINER = 'devops-task-api-staging'
         IMAGE_TAG = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     }
