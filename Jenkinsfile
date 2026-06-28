@@ -101,13 +101,17 @@ pipeline {
 
         stage('Push Docker Image') {
             when {
-                anyOf {
-                    branch 'main'
-                    expression {
-                        return env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main'
+                    anyOf {
+                        branch 'Main'
+                        branch 'main'
+                        expression {
+                            return env.GIT_BRANCH == 'origin/Main' ||
+                                env.GIT_BRANCH == 'Main' ||
+                                env.GIT_BRANCH == 'origin/main' ||
+                                env.GIT_BRANCH == 'main'
+                        }
                     }
                 }
-            }
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'final_project_github_token',
@@ -130,9 +134,13 @@ pipeline {
         stage('Terraform Apply') {
             when {
                 anyOf {
+                    branch 'Main'
                     branch 'main'
                     expression {
-                        return env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main'
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                               env.GIT_BRANCH == 'Main' ||
+                               env.GIT_BRANCH == 'origin/main' ||
+                               env.GIT_BRANCH == 'main'
                     }
                 }
             }
@@ -153,9 +161,13 @@ pipeline {
         stage('Smoke Test') {
             when {
                 anyOf {
+                    branch 'Main'
                     branch 'main'
                     expression {
-                        return env.GIT_BRANCH == 'origin/main' || env.GIT_BRANCH == 'main'
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                               env.GIT_BRANCH == 'Main' ||
+                               env.GIT_BRANCH == 'origin/main' ||
+                               env.GIT_BRANCH == 'main'
                     }
                 }
             }
