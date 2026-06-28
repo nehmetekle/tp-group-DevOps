@@ -1,36 +1,24 @@
 terraform {
-  required_providers {
-    docker = {
-      source  = "kreuzwerker/docker"
-      version = "~> 3.0"
-    }
-  }
-}
-
-provider "docker" {
-  host = var.docker_host
+  required_version = ">= 1.4.0"
 }
 
 locals {
   full_image = "${var.registry}/${var.image_name}:${var.image_tag}"
 }
 
-resource "docker_image" "app" {
-  name         = local.full_image
-  keep_locally = true
-}
+resource "terraform_data" "deploy_app" {
+  triggers_replace = [
+    local.full_image,
+    var.container_name,
+    var.external_port
+  ]
 
-resource "docker_container" "app" {
-  name    = var.container_name
-  image   = docker_image.app.image_id
-  restart = "unless-stopped"
-
-  networks_advanced {
-    name = var.network_name
-  }
-
-  ports {
-    internal = var.app_port
-    external = var.external_port
+  provisioner "local-exec" {
+    command = <<EOT
+docker network inspect ${var.network_name} >/dev/null 2>&1 || docker network create ${var.network_name}
+docker rm -f ${var.container_name} >/dev/null 2>&1 || true
+docker pull ${local.full_image}
+docker run -d --name ${var.container_name} --restart unless-stopped --network ${var.network_name} -p ${var.external_port}:${var.app_port} ${local.full_image}
+EOT
   }
 }

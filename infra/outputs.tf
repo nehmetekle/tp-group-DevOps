@@ -1,5 +1,5 @@
 output "container_name" {
-  value = docker_container.app.name
+  value = var.container_name
 }
 
 output "image" {

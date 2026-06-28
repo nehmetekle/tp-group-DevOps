@@ -150,21 +150,9 @@ pipeline {
             steps {
                 dir('infra') {
                     sh '''
-                    echo "Docker version:"
-                    docker version || true
-
-                    echo "Terraform version:"
-                    terraform version
-
-                    echo "Cleaning old Terraform provider cache..."
                     rm -rf .terraform .terraform.lock.hcl
 
-                    echo "Forcing Docker API version 1.44..."
-                    export DOCKER_API_VERSION=1.44
-
-                    docker rm -f ${STAGING_CONTAINER} || true
-
-                    terraform init -upgrade -input=false
+                    terraform init -input=false
 
                     terraform apply -auto-approve \
                     -var="image_tag=${IMAGE_TAG}" \
