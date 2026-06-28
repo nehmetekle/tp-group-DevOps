@@ -41,5 +41,5 @@ variable "app_port" {
 variable "external_port" {
   description = "External app port"
   type        = number
-  default     = 8000
+  default     = 8002
 }
