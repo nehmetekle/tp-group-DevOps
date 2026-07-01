@@ -14,11 +14,24 @@ resource "terraform_data" "deploy_app" {
   ]
 
   provisioner "local-exec" {
+    environment = {
+      DOCKER_HOST = var.docker_host
+    }
+
     command = <<EOT
 docker network inspect ${var.network_name} >/dev/null 2>&1 || docker network create ${var.network_name}
 docker rm -f ${var.container_name} >/dev/null 2>&1 || true
 docker pull ${local.full_image}
-docker run -d --name ${var.container_name} --restart unless-stopped --network ${var.network_name} -p ${var.external_port}:${var.app_port} ${local.full_image}
+docker run -d \
+  --name ${var.container_name} \
+  --restart unless-stopped \
+  --network ${var.network_name} \
+  -p ${var.external_port}:${var.app_port} \
+  --health-cmd "python -c \"import urllib.request; urllib.request.urlopen('http://localhost:${var.app_port}/health')\"" \
+  --health-interval 10s \
+  --health-timeout 3s \
+  --health-retries 3 \
+  ${local.full_image}
 EOT
   }
 }

@@ -1,0 +1,9 @@
+global:
+  scrape_interval: 5s
+
+scrape_configs:
+  - job_name: "devops-task-api"
+    metrics_path: /metrics
+    static_configs:
+      - targets:
+          - "devops-task-api-staging:8000"
