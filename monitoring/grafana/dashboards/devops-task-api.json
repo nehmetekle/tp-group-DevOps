@@ -14,7 +14,7 @@
       "id": 1,
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "prometheus"
       },
       "targets": [
         {
@@ -36,7 +36,7 @@
       "id": 2,
       "datasource": {
         "type": "prometheus",
-        "uid": "Prometheus"
+        "uid": "prometheus"
       },
       "targets": [
         {

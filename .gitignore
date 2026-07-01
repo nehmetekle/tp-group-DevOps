@@ -8,3 +8,5 @@ htmlcov/
 .env
 .DS_Store
 
+docs
+
