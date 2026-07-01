@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'devops-task-api'
-        REGISTRY = 'ghcr.io/annamerheb'
+        REGISTRY = 'ghcr.io/jefsaber'
         STAGING_CONTAINER = 'devops-task-api-staging'
         IMAGE_TAG = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
     }
@@ -120,7 +120,7 @@ pipeline {
             }
             steps {
                 withCredentials([usernamePassword(
-                    credentialsId: 'github-token',
+                    credentialsId: 'final_project_github_token',
                     usernameVariable: 'REGISTRY_USER',
                     passwordVariable: 'REGISTRY_PASS'
                 )]) {
