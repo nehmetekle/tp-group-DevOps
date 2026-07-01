@@ -105,10 +105,10 @@ pipeline {
         stage('Push Docker Image') {
             when {
                 anyOf {
-                    branch 'main'
+                    branch 'Main'
                     expression {
-                        return env.GIT_BRANCH == 'origin/main' ||
-                            env.GIT_BRANCH == 'main'
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                            env.GIT_BRANCH == 'Main'
                     }
                 }
             }
@@ -134,10 +134,10 @@ pipeline {
         stage('Terraform Apply') {
             when {
                 anyOf {
-                    branch 'main'
+                    branch 'Main'
                     expression {
-                        return env.GIT_BRANCH == 'origin/main' ||
-                            env.GIT_BRANCH == 'main'
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                            env.GIT_BRANCH == 'Main'
                     }
                 }
             }
@@ -160,10 +160,10 @@ pipeline {
         stage('Smoke Test') {
             when {
                 anyOf {
-                    branch 'main'
+                    branch 'Main'
                     expression {
-                        return env.GIT_BRANCH == 'origin/main' ||
-                               env.GIT_BRANCH == 'main'
+                        return env.GIT_BRANCH == 'origin/Main' ||
+                               env.GIT_BRANCH == 'Main'
                     }
                 }
             }
